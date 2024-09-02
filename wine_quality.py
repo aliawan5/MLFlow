@@ -82,7 +82,7 @@ class Model:
                                      registered_model_name="sk-learn-random-forest-reg-model")
         
 if __name__ == "__main__":
-    model = LogisticRegression()
+    model = LogisticRegression ()
     m = Model(model)
     m.load_model("winequality-red.csv")
     m.preprocess_data()
