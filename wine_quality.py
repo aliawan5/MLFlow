@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 import mlflow
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.ensemble import RandomForestClassifier
+
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'aliawan05500'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = '4166e1e14e3ded1022595ba47fda76a76a77e1ae'
 
 class Model:
     def __init__(self, model):
@@ -62,7 +66,7 @@ class Model:
             raise ("No data split for evaluation")
 
     def mlflow(self):
-        mlflow.set_tracking_uri("http://127.0.0.1:5000/")
+        mlflow.set_tracking_uri("https://dagshub.com/aliawan05500/MLFlow.mlflow")
         mlflow.set_experiment("Wine Quality Prediction")
 
         with mlflow.start_run():
@@ -74,10 +78,11 @@ class Model:
 
             mlflow.log_artifact("winequality-red.csv", artifact_path='data')
 
-            mlflow.sklearn.log_model(self.model, 'model')
+            mlflow.sklearn.log_model(self.model, 'model',
+                                     registered_model_name="sk-learn-random-forest-reg-model")
         
 if __name__ == "__main__":
-    model = RandomForestClassifier()
+    model = LogisticRegression()
     m = Model(model)
     m.load_model("winequality-red.csv")
     m.preprocess_data()
